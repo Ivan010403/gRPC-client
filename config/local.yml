@@ -1,0 +1,12 @@
+env: "local"
+
+grpc_server:
+  address: ":4545"
+  timeout: 10s
+  max_retry: 5
+
+http_server: 
+  address: "localhost:8085"
+  timeout: 4s
+  idle_timeout: 60s
+
