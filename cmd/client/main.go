@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+
 	logger := createLogger()
 	if logger == nil {
 		panic("logger failed to create")

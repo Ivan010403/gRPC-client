@@ -2,7 +2,10 @@ package httpserver
 
 import (
 	grpcclient "client/internal/app/grpcClient"
+	"client/internal/http-server/handlers/delete"
+	"client/internal/http-server/handlers/get"
 	"client/internal/http-server/handlers/index"
+	"client/internal/http-server/handlers/upload"
 	"log/slog"
 	"net/http"
 	"time"
@@ -43,6 +46,12 @@ func setupRouter(log *slog.Logger, client *grpcclient.Client) *chi.Mux {
 	router.Handle("/static/*", http.StripPrefix("/static/", fs))
 
 	router.Get("/", index.New(log, client))
+
+	router.Post("/upload", upload.New(log, client))
+
+	router.Post("/get", get.New(log, client))
+
+	router.Post("/delete", delete.New(log, client))
 
 	return router
 }
