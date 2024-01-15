@@ -6,6 +6,8 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -30,9 +32,16 @@ func main() {
 		logger.Error("creation client_application error", slog.Any("err", err))
 		return
 	}
-	client_application.Serv.RunServer()
 
-	// TODO: graceful stop
+	go client_application.Serv.RunServer()
+
+	stopChan := make(chan os.Signal, 1)
+	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
+	<-stopChan
+
+	logger.Info("stopping the application")
+	client_application.Serv.Stop()
+	logger.Info("application successfully stoped")
 }
 
 func createLogger() *slog.Logger {

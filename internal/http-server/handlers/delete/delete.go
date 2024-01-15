@@ -14,12 +14,14 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 
 		name, format, err := validate(r.FormValue("namedelete"))
 		if err != nil {
+			log.Error("validate error", slog.Any("err", err))
 			http.Error(w, "can't get name of file", http.StatusInternalServerError)
 			return
 		}
 
 		data, err := client.DeleteFile(context.Background(), name, format)
 		if err != nil {
+			log.Error("client DeleteFileErr", slog.Any("err", err))
 			http.Error(w, "can't delete file from cloud", http.StatusInternalServerError)
 			return
 		}

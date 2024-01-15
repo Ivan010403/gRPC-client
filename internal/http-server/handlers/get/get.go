@@ -15,25 +15,28 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 
 		name, format, err := validate(r.FormValue("name"))
 		if err != nil {
+			log.Error("validation error", slog.Any("err", err))
 			http.Error(w, "can't get name of file", http.StatusInternalServerError)
 			return
 		}
 
 		data, err := client.GetFile(context.Background(), name, format)
 		if err != nil {
+			log.Error("client getting file error", slog.Any("err", err))
 			http.Error(w, "can't getfile from cloud", http.StatusInternalServerError)
 			return
 		}
 
 		fl, err := os.Create("../../internal/web-site/public/static/img/" + "temp." + format)
 		if err != nil {
-			fmt.Println(err)
+			log.Error("create temp file error", slog.Any("err", err))
 			http.Error(w, "can't getfile from cloud", http.StatusInternalServerError)
 			return
 		}
 
 		_, err = fl.Write(data)
 		if err != nil {
+			log.Error("writint to temp file error", slog.Any("err", err))
 			http.Error(w, "can't getfile from cloud", http.StatusInternalServerError)
 			return
 		}

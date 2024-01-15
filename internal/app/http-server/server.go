@@ -6,6 +6,7 @@ import (
 	"client/internal/http-server/handlers/get"
 	"client/internal/http-server/handlers/index"
 	"client/internal/http-server/handlers/upload"
+	"context"
 	"log/slog"
 	"net/http"
 	"time"
@@ -46,13 +47,11 @@ func setupRouter(log *slog.Logger, client *grpcclient.Client) *chi.Mux {
 	router.Handle("/static/*", http.StripPrefix("/static/", fs))
 
 	router.Get("/", index.New(log, client))
-
 	router.Post("/upload", upload.New(log, client))
-
 	router.Post("/get", get.New(log, client))
-
 	router.Post("/delete", delete.New(log, client))
 
+	log.Info("router chi has been created successfully")
 	return router
 }
 
@@ -63,4 +62,8 @@ func (h *HTTP_server) RunServer() {
 	}
 }
 
-//TODO: graceful stop
+func (h *HTTP_server) Stop() {
+	h.log.Info("graceful shutdown http server")
+
+	h.serv.Shutdown(context.Background())
+}

@@ -17,24 +17,28 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 
 		r.Body = http.MaxBytesReader(w, r.Body, size)
 		if err := r.ParseMultipartForm(size); err != nil {
+			log.Error("parsing error", slog.Any("err", err))
 			http.Error(w, "The uploaded file is too big. Please choose an file that's less than 10MB in size", http.StatusBadRequest)
 			return
 		}
 
 		file, header, err := r.FormFile("file")
 		if err != nil {
+			log.Error("FormFile error", slog.Any("err", err))
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		data, err := io.ReadAll(file)
 		if err != nil {
+			log.Error("ReadAll file error", slog.Any("err", err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		name, format, err := getNameWithFormat(header.Filename)
 		if err != nil {
+			log.Error("getting name and format error", slog.Any("err", err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -42,12 +46,12 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 
 		full_name, err := client.UploadFile(context.Background(), data, name, format)
 		if err != nil {
+			log.Error("client UploadFile error", slog.Any("err", err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		log.Info("file was uploaded", slog.String("name", full_name))
-		//TODO: write response
 	}
 }
 

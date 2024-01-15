@@ -21,11 +21,10 @@ type Client struct {
 	log       *slog.Logger
 }
 
-//TODO: 1024 change to var
+const chunkSize = 1024
 
 func NewClient(logger *slog.Logger, ctx context.Context, addr string, timeout time.Duration, max_retry int) (*Client, error) {
 	//TODO: защищенное соединение, шифрование
-	//TODO: закрывать соединение
 	rtrOpt := []retry.CallOption{
 		retry.WithCodes(codes.NotFound, codes.DeadlineExceeded),
 		retry.WithMax(uint(max_retry)),
@@ -49,7 +48,7 @@ func (c *Client) UploadFile(ctx context.Context, data []byte, name, format_file 
 	}
 
 	reader := bytes.NewReader(data)
-	buffer := make([]byte, 1024)
+	buffer := make([]byte, chunkSize)
 
 	req := &proto.UploadFileRequest{NameFile: name, FileFormat: format_file}
 
