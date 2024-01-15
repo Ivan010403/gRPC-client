@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
@@ -19,7 +20,9 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 			return
 		}
 
-		data, err := client.DeleteFile(context.Background(), name, format)
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*3)
+
+		data, err := client.DeleteFile(ctx, name, format)
 		if err != nil {
 			log.Error("client DeleteFileErr", slog.Any("err", err))
 			http.Error(w, "can't delete file from cloud", http.StatusInternalServerError)

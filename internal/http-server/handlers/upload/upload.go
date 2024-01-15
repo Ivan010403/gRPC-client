@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 const size = 1024 * 1024 * 10
@@ -44,7 +45,9 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 		}
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 
-		full_name, err := client.UploadFile(context.Background(), data, name, format)
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*10)
+
+		full_name, err := client.UploadFile(ctx, data, name, format)
 		if err != nil {
 			log.Error("client UploadFile error", slog.Any("err", err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)

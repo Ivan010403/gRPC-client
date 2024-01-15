@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 )
 
 func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
@@ -20,7 +21,9 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 			return
 		}
 
-		data, err := client.GetFile(context.Background(), name, format)
+		ctx, _ := context.WithTimeout(context.Background(), time.Second*10)
+
+		data, err := client.GetFile(ctx, name, format)
 		if err != nil {
 			log.Error("client getting file error", slog.Any("err", err))
 			http.Error(w, "can't getfile from cloud", http.StatusInternalServerError)
