@@ -1,9 +1,9 @@
 module client
 
-go 1.22rc1
+go 1.21.6
 
 require (
-	github.com/Ivan010403/proto v0.0.4
+	github.com/Ivan010403/proto v0.0.6
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	google.golang.org/grpc v1.60.1
 )

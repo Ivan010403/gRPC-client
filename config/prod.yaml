@@ -1,0 +1,12 @@
+env: "prod"
+
+grpc_server:
+  address: "grpcserver:4545"
+  timeout: 10s
+  max_retry: 5
+
+http_server: 
+  address: "0.0.0.0:8083"
+  timeout: 15s
+  idle_timeout: 60s
+

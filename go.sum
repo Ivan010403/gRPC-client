@@ -6,6 +6,8 @@ github.com/Ivan010403/proto v0.0.3 h1:pjwFnaOnLOkRuZVAwbaMtvJ0xcKMGWolXMV/FMFP/p
 github.com/Ivan010403/proto v0.0.3/go.mod h1:J4z5kvF1ofT+7hZjgvo4rRlUsivi+xO/pbJaKUkmK5g=
 github.com/Ivan010403/proto v0.0.4 h1:/p1aX943+C6Y7eadONVshUvBWsozgp8fUGCGnKiISgM=
 github.com/Ivan010403/proto v0.0.4/go.mod h1:J4z5kvF1ofT+7hZjgvo4rRlUsivi+xO/pbJaKUkmK5g=
+github.com/Ivan010403/proto v0.0.6 h1:UgBYJPOVmJfkihWZJMOKZ+GJzKO+6XCI5RKmdYfqVcI=
+github.com/Ivan010403/proto v0.0.6/go.mod h1:HG3/rgooCUZJ+Cbl8XQrdfKQ8IaCz5VAnWgK5V2h8jE=
 github.com/go-chi/chi/v5 v5.0.11 h1:BnpYbFZ3T3S1WMpD79r7R5ThWX40TaFB7L31Y8xqSwA=
 github.com/go-chi/chi/v5 v5.0.11/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=

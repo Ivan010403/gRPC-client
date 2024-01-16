@@ -12,6 +12,7 @@ func New(log *slog.Logger, client *grpcclient.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data, err := client.GetFullData(context.Background())
 		if err != nil {
+			log.Error("getting full data error", slog.Any("err", err))
 			http.Error(w, "Can't get data", http.StatusInternalServerError)
 			return
 		}
