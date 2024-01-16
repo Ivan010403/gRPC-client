@@ -1,0 +1,14 @@
+[Unit]
+Description=client
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/apps/client
+ExecStart=/root/apps/client/client --config=/root/apps/client/config/prod.yaml
+Restart=always
+RestartSec=4
+StandardOutput=inherit
+
+[Install]
+WantedBy=multi-user.target
