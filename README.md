@@ -21,18 +21,32 @@
 | /delete  | POST  | Запуск client.DeleteFile() c таймаутом 3 секунды (контекст)|
 
 
-# Service layer
+# Service layer (gRPC client)
 
-1. Вся реализация бизнес-логики содержится в директории ```internal/services```. Также создаётся дополнительный интерфейс, который мы пишем в месте использования, а именно в сервисном слое:
+1. Вся реализация клиента содержится в директории ```internal/app/grpcClient```. Для начала мы конструктором создаём новое подключение и клиент, используя это подключение:
 
 ```
-type FileWork interface {
-	Write([]byte, string, string) error
-	Update([]byte, string, string) error
-	Delete(string, string) error
-	Get(string, string) ([]byte, error)
-	GetFullData() ([]postgres.File, error)
-}
+conn, err := grpc.DialContext(ctx, addr, grpc.WithTransportCredentials(insecure.NewCredentials())...
+
+proto.NewCloudClient(conn)
 ```
-2. Тип ```Cloud``` из сервисного слоя реализует этот интерфейс, именно поэтому мы передаём его в наш транспортный слой.
+
+Метод NewCloudClient был сгенерирован утилитой protoc и используется для создания объекта типа proto.CloudClient, через который мы можем использовать функции из созданного контракта.
+
+2. Наш созданный тип Client имеет 4 метода для реализации бизнес-логики
+
+```
+func (c *Client) UploadFile(ctx context.Context, data []byte, name, format_file string) (string, error)
+
+func (c *Client) DeleteFile(ctx context.Context, name, format_file string) (string, error)
+
+func (c *Client) GetFile(ctx context.Context, name, format_file string) ([]byte, error)
+
+func (c *Client) GetFullData(ctx context.Context) ([]struct {
+	Name          string
+	Creation_date string
+	Update_date   string
+}, error)
+```
+
 
