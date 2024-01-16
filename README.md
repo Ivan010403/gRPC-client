@@ -2,7 +2,7 @@
 
 Общая структура реализации может быть описана следующей схемой:
 
-![readme drawio](https://github.com/Ivan010403/gRPC-server/assets/125370827/09c722d6-5c48-465e-9725-ca7d010581c0)
+![цу drawio](https://github.com/Ivan010403/gRPC-client/assets/125370827/ddc6d063-610e-4f2e-ba54-2ee6a7bc4d18)
 
 1. Transport layer: содержит в себе реализацию http сервера для веб интерфейса, включая все handler'ы. 
 2. Service layer: содержит в себе реализацию gRPC клиента.
